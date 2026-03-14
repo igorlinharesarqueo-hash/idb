@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AstroLab Web</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0f1a2c;
+      --panel-2:#13233d;
+      --text:#edf4ff;
+      --muted:#9bb0cf;
+      --accent:#58b7ff;
+      --accent2:#9b7bff;
+      --ok:#4ade80;
+      --warn:#fbbf24;
+      --danger:#fb7185;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:radial-gradient(circle at top, #0b1a33 0%, #060d19 50%, #03070e 100%);
+      min-height:100vh;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:24px}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:stretch}
+    .card{
+      background:rgba(15,26,44,.92);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 20px 40px rgba(0,0,0,.28);
+      backdrop-filter: blur(8px);
+    }
+    h1{margin:0 0 8px;font-size:2.2rem}
+    h2{margin:0 0 10px;font-size:1.08rem}
+    p{margin:0 0 10px;line-height:1.5}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+    .wide{grid-column:1/-1}
+    label{display:block;font-size:.9rem;color:var(--muted);margin:10px 0 6px}
+    select,input,button{width:100%;border:0;border-radius:14px;padding:12px 14px;font-size:.98rem}
+    select,input{background:var(--panel-2);color:var(--text);border:1px solid rgba(255,255,255,.08)}
+    button{cursor:pointer;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;margin-top:10px}
+    button.secondary{background:#1a2c49;color:var(--text);border:1px solid rgba(255,255,255,.08)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:.82rem;background:#182844;color:#d8e7ff;margin:4px 6px 0 0}
+    .stage{
+      min-height:360px;border-radius:18px;position:relative;overflow:hidden;
+      background:
+        radial-gradient(circle at center, rgba(255,120,0,.16), transparent 22%),
+        radial-gradient(circle at center, rgba(0,0,0,1) 0 6%, transparent 6% 100%),
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.18) 0 1px, transparent 1px 100%),
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,.12) 0 1px, transparent 1px 100%),
+        radial-gradient(circle at 85% 80%, rgba(255,255,255,.14) 0 1px, transparent 1px 100%),
+        linear-gradient(180deg,#060c15,#03070e);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .orbit{position:absolute;inset:0;margin:auto;border:1px solid rgba(255,255,255,.1);border-radius:50%}
+    .obj{position:absolute;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(255,255,255,.22)}
+    .footer{margin-top:18px;padding:16px 0 8px;color:var(--muted);font-size:.92rem}
+    .report{white-space:pre-wrap;background:#0a1526;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:14px;min-height:170px;color:#d9e7fb;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem}
+    @media (max-width:900px){.hero,.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="card">
+        <h1>AstroLab Web</h1>
+        <p>Protótipo em HTML para um laboratório astrofísico educacional na web, com foco em estudantes que exploram modelos didáticos e científicos.</p>
+        <p class="muted">Esta versão é estática e serve como base de interface. Ela pode ser conectada depois a um motor científico real para gerar CSV, GIF, vídeo, WebGL e relatórios de simulação.</p>
+        <div>
+          <span class="pill">Modo didático</span>
+          <span class="pill">Modo científico</span>
+          <span class="pill">Objetos reais</span>
+          <span class="pill">Exportações</span>
+          <span class="pill">Web</span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Prévia visual</h2>
+        <div class="stage" id="stage">
+          <div class="orbit" style="width:130px;height:130px"></div>
+          <div class="orbit" style="width:220px;height:220px"></div>
+          <div class="orbit" style="width:310px;height:310px"></div>
+          <div class="obj" style="left:50%;top:50%;width:46px;height:46px;background:black;border:2px solid #ff9a1f"></div>
+          <div class="obj" style="left:66%;top:50%;width:16px;height:16px;background:#ffd166"></div>
+          <div class="obj" style="left:26%;top:42%;width:11px;height:11px;background:#66c2ff"></div>
+          <div class="obj" style="left:78%;top:35%;width:8px;height:8px;background:#00e5ff"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Configuração do estudo</h2>
+        <label for="mode">Modo</label>
+        <select id="mode">
+          <option value="didatico">Didático</option>
+          <option value="cientifico">Científico</option>
+        </select>
+
+        <label for="object">Objeto principal</label>
+        <select id="object">
+          <option>Sol</option>
+          <option>Júpiter</option>
+          <option>Lua</option>
+          <option>Marte</option>
+          <option>Sonda</option>
+        </select>
+
+        <label for="model">Modelo</label>
+        <select id="model">
+          <option>Schwarzschild aproximado</option>
+          <option>Kerr aproximado</option>
+          <option>N-corpos didático</option>
+          <option>N-corpos científico</option>
+        </select>
+
+        <button id="runBtn">Gerar resumo do experimento</button>
+        <button class="secondary" id="exportBtn">Simular exportações disponíveis</button>
+      </div>
+
+      <div class="card">
+        <h2>Fontes e dados reais</h2>
+        <p>Interface pensada para integrar com bases reais de efemérides e catálogos astronômicos.</p>
+        <ul class="muted">
+          <li>JPL Horizons / efemérides</li>
+          <li>Presets locais para ensino</li>
+          <li>Cenários salvos por turma</li>
+        </ul>
+        <p><strong>Status desta entrega:</strong> pronto para virar site estático e ser publicado.</p>
+      </div>
+
+      <div class="card wide">
+        <h2>Relatório do cenário</h2>
+        <div class="report" id="report">Escolha os parâmetros e clique em “Gerar resumo do experimento”.</div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Este arquivo é um ponto de partida web. Ele pode ser hospedado em qualquer servidor de site estático.
+    </div>
+  </div>
+
+  <script>
+    const mode = document.getElementById("mode");
+    const object = document.getElementById("object");
+    const model = document.getElementById("model");
+    const report = document.getElementById("report");
+
+    document.getElementById("runBtn").addEventListener("click", () => {
+      const modeTxt = mode.value === "cientifico" ? "científico" : "didático";
+      const text = [
+        "RELATÓRIO DE TESTE DO CENÁRIO",
+        "----------------------------",
+        `Modo: ${modeTxt}`,
+        `Objeto selecionado: ${object.value}`,
+        `Modelo: ${model.value}`,
+        "",
+        "Objetivo do cenário:",
+        "Explorar comportamento orbital, precessão, aproximações relativísticas e interpretação de resultados.",
+        "",
+        "Saídas esperadas quando o motor científico estiver conectado:",
+        "- CSV com séries temporais",
+        "- GIF animado",
+        "- vídeo MP4",
+        "- cena 3D / WebGL",
+        "- relatório comparativo entre modo didático e científico",
+        "",
+        "Leitura pedagógica:",
+        modeTxt === "científico"
+          ? "Este modo prioriza maior rigor, mais parâmetros e análise quantitativa."
+          : "Este modo prioriza clareza visual, explicações e simplificações úteis para aprendizagem inicial."
+      ].join("\n");
+      report.textContent = text;
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      report.textContent = [
+        "EXPORTAÇÕES PLANEJADAS",
+        "----------------------",
+        "✔ CSV",
+        "✔ GIF",
+        "✔ MP4",
+        "✔ GLTF / WebGL",
+        "✔ PNG / mapa de calor",
+        "",
+        "Nesta versão HTML, os botões são demonstrativos.",
+        "Na próxima etapa, eles podem ser conectados a um backend científico real."
+      ].join("\n");
+    });
+  </script>
+</body>
+</html>
